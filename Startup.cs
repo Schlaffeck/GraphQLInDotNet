@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
 using HotChocolate;
+using GraphQlInDotNet.Domain.InMemory;
 
 namespace GraphQlInDotNet
 {
@@ -27,6 +28,8 @@ namespace GraphQlInDotNet
                 // .AddDirectiveType<AuthorizeDirectiveType>()
                 .AddQueryType<Query>()
                 .Create());
+
+            services.UseInMemoryDomain();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
