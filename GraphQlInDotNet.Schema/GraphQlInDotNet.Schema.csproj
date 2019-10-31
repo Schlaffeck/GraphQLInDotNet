@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HotChocolate" Version="10.1.1" />
+    <PackageReference Include="HotChocolate.Abstractions" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
+    <ProjectReference Include="..\GraphQlInDotNet\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
+    <ProjectReference Include="..\GraphQlInDotNet\GraphQLInDotNet.Data\GraphQLInDotNet.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Catalog\" />
+  </ItemGroup>
+
+</Project>
