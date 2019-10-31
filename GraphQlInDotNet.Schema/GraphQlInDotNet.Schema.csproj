@@ -11,8 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
-    <ProjectReference Include="..\GraphQlInDotNet\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
-    <ProjectReference Include="..\GraphQlInDotNet\GraphQLInDotNet.Data\GraphQLInDotNet.Data.csproj" />
+    <ProjectReference Include="..\GraphQLInDotNet.Data\GraphQLInDotNet.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
