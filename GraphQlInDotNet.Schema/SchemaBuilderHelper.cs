@@ -1,6 +1,7 @@
 ﻿using GraphQlInDotNet.Catalog;
 using GraphQlInDotNet.Catalog.CreateCategory;
 using GraphQlInDotNet.Catalog.GetAllCategories;
+using GraphQlInDotNet.Schema.Catalog;
 using HotChocolate;
 
 namespace GraphQlInDotNet.Schema
@@ -10,8 +11,8 @@ namespace GraphQlInDotNet.Schema
         public static ISchemaBuilder AddCatalogDomain(this ISchemaBuilder builder)
         {
             return builder
-                .AddQueryType<GetAllCategoriesQuery>()
-                .AddMutationType<CreateCategoryCommand>();
+                .AddQueryType<CatalogQuery>()
+                .AddMutationType<CatalogMutation>();
         }
     }
 }
