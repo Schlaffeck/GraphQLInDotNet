@@ -21,7 +21,7 @@ namespace GraphQlInDotNet.GraphQl
 
             // enable InMemory messaging services for subscription support.
             // services.AddInMemorySubscriptionProvider();
-            services.UseInMemoryDomain();
+            services.UseInMemoryData();
             services.AddCatalogDomain();
 
             // this enables you to use DataLoader in your resolvers.

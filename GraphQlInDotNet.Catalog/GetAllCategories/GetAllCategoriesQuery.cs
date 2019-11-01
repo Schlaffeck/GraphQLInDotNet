@@ -1,4 +1,5 @@
-﻿using GraphQLInDotNet.Data.Models;
+﻿using GraphQlInDotNet.Common.Queries;
+using GraphQLInDotNet.Data.Models;
 using GraphQLInDotNet.Domain.Data;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace GraphQlInDotNet.Catalog.GetAllCategories
 {
-    public class GetAllCategoriesQuery
+    public class GetAllCategoriesQuery : IQuery<IEnumerable<Category>>
     {
         private readonly IDataContext dataContext;
 

@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GraphQLInDotNet.Data\GraphQLInDotNet.Data.csproj" />
-  </ItemGroup>
-
 </Project>

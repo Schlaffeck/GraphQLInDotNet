@@ -1,11 +1,12 @@
-﻿using GraphQLInDotNet.Data.Models;
+﻿using GraphQlInDotNet.Common.Commands;
+using GraphQLInDotNet.Data.Models;
 using GraphQLInDotNet.Domain.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Catalog.CreateCategory
 {
-    public class CreateCategoryCommand
+    public class CreateCategoryCommand : IAsyncCommand<CreateCategoryModel, Category>
     {
         private readonly IDataContext dataContext;
 
@@ -25,7 +26,7 @@ namespace GraphQlInDotNet.Catalog.CreateCategory
             return new Category
             {
                 Name = model.Name,
-                SubCategories = model.NewSubCategories.Select(Map).ToList()
+                SubCategories = model.NewSubCategories?.Select(Map).ToList()
             };
         }
     }

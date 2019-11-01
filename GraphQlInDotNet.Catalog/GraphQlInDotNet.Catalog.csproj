@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GraphQlInDotNet.Common\GraphQlInDotNet.Common.csproj" />
     <ProjectReference Include="..\GraphQLInDotNet.Data\GraphQLInDotNet.Data.csproj" />
   </ItemGroup>
 

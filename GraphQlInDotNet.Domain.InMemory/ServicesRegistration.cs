@@ -6,9 +6,9 @@ namespace GraphQlInDotNet.Domain.InMemory
 {
     public static class ServicesRegistration
     {
-        public static IServiceCollection UseInMemoryDomain(this IServiceCollection services)
+        public static IServiceCollection UseInMemoryData(this IServiceCollection services)
         {
-            services.AddScoped<IDataContext, InMemoryDataContext>();
+            services.AddSingleton<IDataContext, InMemoryDataContext>();
             return services;
         }
     }
