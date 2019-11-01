@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
 using HotChocolate;
 using HotChocolate.AspNetCore.Playground;
+using GraphQlInDotNet.Catalog;
+using GraphQlInDotNet.Domain.InMemory;
+using GraphQlInDotNet.Schema;
 
 namespace GraphQlInDotNet.GraphQl
 {
@@ -18,15 +21,15 @@ namespace GraphQlInDotNet.GraphQl
 
             // enable InMemory messaging services for subscription support.
             // services.AddInMemorySubscriptionProvider();
+            services.UseInMemoryDomain();
+            services.AddCatalogDomain();
 
             // this enables you to use DataLoader in your resolvers.
             services.AddDataLoaderRegistry();
 
             // Add GraphQL Services
             services.AddGraphQL(sp => SchemaBuilder.New()
-                // enable for authorization support
-                // .AddDirectiveType<AuthorizeDirectiveType>()
-                .AddQueryType<Query>()
+                .AddCatalogDomain()
                 .Create());
         }
 
@@ -40,8 +43,8 @@ namespace GraphQlInDotNet.GraphQl
 
             // enable this if you want tu support subscription.
             // app.UseWebSockets();
-            app.UseGraphQL(new QueryMiddlewareOptions { Path = "/gql" });
-            app.UsePlayground(new PlaygroundOptions { QueryPath = "/gql", Path = "/playground" });
+            app.UseGraphQL("/graphql")
+            .UsePlayground("/graphql");
         }
     }
 }
