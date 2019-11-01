@@ -1,4 +1,4 @@
-﻿namespace GraphQlInDotNet
+﻿namespace GraphQlInDotNet.GraphQl
 {
     public class Query
     {
