@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <StartupObject>GraphQlInDotNet.Api.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HotChocolate" Version="10.1.1" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="10.1.1" />
+    <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
+    <ProjectReference Include="..\GraphQlInDotNet.Domain.InMemory\GraphQlInDotNet.Data.InMemory.csproj" />
+    <ProjectReference Include="..\GraphQlInDotNet.Schema\GraphQlInDotNet.Schema.csproj" />
+  </ItemGroup>
+
+</Project>
