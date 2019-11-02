@@ -1,5 +1,6 @@
 ﻿using GraphQlInDotNet.Catalog.CreateCategory;
 using GraphQLInDotNet.Data.Models;
+using HotChocolate;
 using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Schema.Catalog
@@ -13,7 +14,7 @@ namespace GraphQlInDotNet.Schema.Catalog
             this.createCategoryCommand = createCategoryCommand;
         }
 
-        public async Task<Category> CreateCategory(CreateCategoryModel input)
+        public async Task<Category> CreateCategory([GraphQLNonNullType] CreateCategoryModel input)
         {
             return await this.createCategoryCommand.ExecuteAsync(input);
         }

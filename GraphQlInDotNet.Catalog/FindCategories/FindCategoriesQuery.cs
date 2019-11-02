@@ -3,20 +3,21 @@ using GraphQLInDotNet.Data.Models;
 using GraphQLInDotNet.Domain.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace GraphQlInDotNet.Catalog.GetAllCategories
+namespace GraphQlInDotNet.Catalog.FindCategories
 {
-    public class GetAllCategoriesQuery : IQuery<IEnumerable<Category>>
+    public class FindCategoriesQuery : IQuery<IQueryable<Category>>
     {
         private readonly IDataContext dataContext;
 
-        public GetAllCategoriesQuery(IDataContext dataContext)
+        public FindCategoriesQuery(IDataContext dataContext)
         {
             this.dataContext = dataContext;
         }
 
-        public IEnumerable<Category> Execute()
+        public IQueryable<Category> Execute()
         {
             return this.dataContext.Categories.Query();
         }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GraphQlInDotNet.Catalog.CreateCategory;
+using GraphQlInDotNet.Catalog.FindCategories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GraphQlInDotNet.Catalog
 {
@@ -7,8 +9,8 @@ namespace GraphQlInDotNet.Catalog
         public static IServiceCollection AddCatalogDomain(this IServiceCollection services)
         {
             return services
-                .AddScoped<GetAllCategories.GetAllCategoriesQuery>()
-                .AddScoped<CreateCategory.CreateCategoryCommand>();
+                .AddScoped<FindCategoriesQuery>()
+                .AddScoped<CreateCategoryCommand>();
         }
     }
 }

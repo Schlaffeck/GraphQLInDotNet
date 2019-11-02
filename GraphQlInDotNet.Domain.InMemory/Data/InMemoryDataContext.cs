@@ -1,4 +1,5 @@
-﻿using GraphQLInDotNet.Data.Models;
+﻿using GraphQlInDotNet.Data.InMemory.Data;
+using GraphQLInDotNet.Data.Models;
 using GraphQLInDotNet.Domain.Data;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace GraphQlInDotNet.Domain.InMemory.Data
     {
         private readonly IDictionary<Type, object> dataSetsDictionary;
 
-        public IDataSet<Category> Categories { get; } = new InMemoryDataSet<Category>();
+        public IDataSet<Category> Categories { get; } = new CategoriesDataSet();
 
         public InMemoryDataContext()
         {

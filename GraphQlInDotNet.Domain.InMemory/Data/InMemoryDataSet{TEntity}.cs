@@ -17,7 +17,7 @@ namespace GraphQlInDotNet.Domain.InMemory.Data
             entities = new Dictionary<int, TEntity>();
         }
 
-        public int Add(TEntity entity)
+        public virtual int Add(TEntity entity)
         {
             if(entities.ContainsKey(entity.Id))
             {

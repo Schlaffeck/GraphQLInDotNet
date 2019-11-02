@@ -1,19 +1,20 @@
-﻿using GraphQlInDotNet.Catalog.GetAllCategories;
+﻿using GraphQlInDotNet.Catalog.FindCategories;
 using GraphQLInDotNet.Data.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphQlInDotNet.Schema.Catalog
 {
     public class CatalogQuery
     {
-        private readonly GetAllCategoriesQuery getAllCategoriesQuery;
+        private readonly FindCategoriesQuery getAllCategoriesQuery;
 
-        public CatalogQuery(GetAllCategoriesQuery getAllCategoriesQuery)
+        public CatalogQuery(FindCategoriesQuery getAllCategoriesQuery)
         {
             this.getAllCategoriesQuery = getAllCategoriesQuery;
         }
 
-        public IEnumerable<Category> Categories()
+        public IQueryable<Category> Categories()
         {
             return this.getAllCategoriesQuery.Execute();
         }
