@@ -22,6 +22,14 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         {
             modelBuilder.Entity<ArtistGenre>()
                 .HasKey(ag => new { ag.ArtistId, ag.GenreId });
+
+            modelBuilder.Entity<Genre>()
+                .HasIndex(g => g.Name)
+                .IsUnique(true);
+
+            modelBuilder.Entity<Artist>()
+                .HasIndex(g => g.Name)
+                .IsUnique(true);
         }
     }
 }
