@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GraphQLInDotNet.Data.Models
 {
@@ -11,6 +12,7 @@ namespace GraphQLInDotNet.Data.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public ICollection<Artist> Artists{ get; set; }
+        [InverseProperty(nameof(ArtistGenre.Genre))]
+        public virtual ICollection<ArtistGenre> Artists { get; set; }
     }
 }

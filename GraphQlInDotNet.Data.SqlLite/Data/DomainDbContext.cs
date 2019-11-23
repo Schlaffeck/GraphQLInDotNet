@@ -20,8 +20,8 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Genre>()
-                .HasKey(e => e.Id);
+            modelBuilder.Entity<ArtistGenre>()
+                .HasKey(ag => new { ag.ArtistId, ag.GenreId });
         }
     }
 }

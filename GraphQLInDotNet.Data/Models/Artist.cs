@@ -18,9 +18,10 @@ namespace GraphQLInDotNet.Data.Models
 
         public string ExternalId { get; set; }
 
-        public ICollection<Genre> Genres { get; set; }
+        [InverseProperty(nameof(ArtistGenre.Artist))]
+        public virtual ICollection<ArtistGenre> Genres { get; set; }
 
         [InverseProperty(nameof(Album.Artist))]
-        public ICollection<Album> Albums { get; set; }
+        public virtual ICollection<Album> Albums { get; set; }
     }
 }

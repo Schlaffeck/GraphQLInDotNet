@@ -17,7 +17,7 @@ namespace GraphQLInDotNet.Data.Models
         public DateTimeOffset ReleaseDate { get; set; }
 
         [InverseProperty(nameof(Track.Album))]
-        public ICollection<Track> Tracks { get; set; }
+        public virtual ICollection<Track> Tracks { get; set; }
 
         public string ExternalId { get; set; }
 
