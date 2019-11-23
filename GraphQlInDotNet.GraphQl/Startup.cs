@@ -8,14 +8,23 @@ using GraphQlInDotNet.Domain.InMemory;
 using GraphQlInDotNet.Schema;
 using GraphQlInDotNet.GraphQl.Middleware;
 using Spotify.Data;
+using GraphQlInDotNet.Data.EntityFramework;
+using Microsoft.Extensions.Configuration;
 
 namespace GraphQlInDotNet.GraphQl
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.UseInMemoryData();
+            services.UseSqlServerData(Configuration);
             //services.UseInMemoryDataSeeder();
             services.UseSpotifyDataSeeder();
             services.AddCatalogDomain();
@@ -32,7 +41,7 @@ namespace GraphQlInDotNet.GraphQl
             if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
-                app.UseMiddleware<SeedDataMiddleware>();
+                //app.UseMiddleware<SeedDataMiddleware>();
             }
 
             // enable this if you want tu support subscription.
