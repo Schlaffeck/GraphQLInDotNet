@@ -1,7 +1,9 @@
-﻿namespace GraphQLInDotNet.Data
+﻿using System.Threading.Tasks;
+
+namespace GraphQLInDotNet.Data
 {
     public interface ISeeder
     {
-        void SeedData(IDataContext dataContext);
+        Task SeedDataAsync(IDataContext dataContext);
     }
 }

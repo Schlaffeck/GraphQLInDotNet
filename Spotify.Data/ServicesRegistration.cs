@@ -8,7 +8,7 @@ namespace Spotify.Data
     {
         public static IServiceCollection UseSpotifyDataSeeder(this IServiceCollection services)
         {
-            services.AddSingleton<ISeeder, SpotifyDataSeeder>();
+            services.AddSingleton<ISeeder, RingobotSpotifyApiDataSeeder>();
             return services;
         }
     }

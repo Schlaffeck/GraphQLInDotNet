@@ -2,6 +2,7 @@
 using GraphQLInDotNet.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Data.InMemory.Seed
 {
@@ -9,11 +10,11 @@ namespace GraphQlInDotNet.Data.InMemory.Seed
     {
         private bool dataSeeded = false;
 
-        public void SeedData(IDataContext dataContext)
+        public Task SeedDataAsync(IDataContext dataContext)
         {
             if(dataSeeded)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             dataSeeded = true;
@@ -21,6 +22,8 @@ namespace GraphQlInDotNet.Data.InMemory.Seed
             {
                 dataContext.Categories.Add(category);
             }
+
+            return Task.CompletedTask;
         }
 
         private static IEnumerable<Category> CreateCategories(int count = 4, string namePrefix = "Main ")

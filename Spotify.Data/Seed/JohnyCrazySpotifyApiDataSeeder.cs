@@ -5,16 +5,17 @@ using SpotifyAPI.Web.Enums;
 using SpotifyAPI.Web.Models;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Spotify.Data.Seed
 {
-    public class SpotifyDataSeeder : ISeeder
+    public class JohnyCrazySpotifyApiDataSeeder : ISeeder
     {
         private readonly AuthorizationCodeAuth authorizationCodeAuth;
         private SpotifyWebAPI api;
         private readonly ManualResetEventSlim authReceivedEvent = new ManualResetEventSlim(false);
 
-        public SpotifyDataSeeder()
+        public JohnyCrazySpotifyApiDataSeeder()
         {
             authorizationCodeAuth = new AuthorizationCodeAuth(
                 "759318169b66436ba800082fc88e0efb",
@@ -23,7 +24,7 @@ namespace Spotify.Data.Seed
                 "https://developer.spotify.com/dashboard/applications/759318169b66436ba800082fc88e0efb"); 
         }
 
-        public void SeedData(IDataContext dataContext)
+        public Task SeedDataAsync(IDataContext dataContext)
         {
             authorizationCodeAuth.Start();
             authorizationCodeAuth.AuthReceived += AuthorizationCodeAuth_AuthReceived;
@@ -35,6 +36,8 @@ namespace Spotify.Data.Seed
             {
                 var bandData = api.SearchItems(band, SearchType.Artist);
             }
+
+            return Task.CompletedTask;
         }
 
         private void AuthorizationCodeAuth_AuthReceived(object sender, AuthorizationCode payload)
