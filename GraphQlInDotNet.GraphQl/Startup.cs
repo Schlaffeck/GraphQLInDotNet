@@ -7,6 +7,7 @@ using GraphQlInDotNet.Catalog;
 using GraphQlInDotNet.Domain.InMemory;
 using GraphQlInDotNet.Schema;
 using GraphQlInDotNet.GraphQl.Middleware;
+using Spotify.Data;
 
 namespace GraphQlInDotNet.GraphQl
 {
@@ -15,7 +16,8 @@ namespace GraphQlInDotNet.GraphQl
         public void ConfigureServices(IServiceCollection services)
         {
             services.UseInMemoryData();
-            services.UseInMemoryDataSeeder();
+            //services.UseInMemoryDataSeeder();
+            services.UseSpotifyDataSeeder();
             services.AddCatalogDomain();
 
             // Add GraphQL Services

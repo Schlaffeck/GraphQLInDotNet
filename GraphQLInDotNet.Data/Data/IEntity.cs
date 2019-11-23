@@ -1,4 +1,4 @@
-﻿namespace GraphQLInDotNet.Domain.Data
+﻿namespace GraphQLInDotNet.Data
 {
     public interface IEntity
     {

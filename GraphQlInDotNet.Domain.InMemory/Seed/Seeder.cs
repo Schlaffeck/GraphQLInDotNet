@@ -1,6 +1,5 @@
 ﻿using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Models;
-using GraphQLInDotNet.Domain.Data;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,14 +8,8 @@ namespace GraphQlInDotNet.Data.InMemory.Seed
     public class Seeder : ISeeder
     {
         private bool dataSeeded = false;
-        private readonly IDataContext dataContext;
 
-        public Seeder(IDataContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
-        public void SeedData()
+        public void SeedData(IDataContext dataContext)
         {
             if(dataSeeded)
             {
@@ -26,7 +19,7 @@ namespace GraphQlInDotNet.Data.InMemory.Seed
             dataSeeded = true;
             foreach (var category in CreateCategories())
             {
-                this.dataContext.Categories.Add(category);
+                dataContext.Categories.Add(category);
             }
         }
 

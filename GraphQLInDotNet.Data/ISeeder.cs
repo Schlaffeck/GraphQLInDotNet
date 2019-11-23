@@ -2,6 +2,6 @@
 {
     public interface ISeeder
     {
-        void SeedData();
+        void SeedData(IDataContext dataContext);
     }
 }

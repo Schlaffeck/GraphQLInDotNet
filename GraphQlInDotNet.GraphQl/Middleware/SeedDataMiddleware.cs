@@ -16,9 +16,9 @@ namespace GraphQlInDotNet.GraphQl.Middleware
             this.next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, ISeeder dataSeeder)
+        public async Task InvokeAsync(HttpContext context, ISeeder dataSeeder, IDataContext dataContext)
         {
-            dataSeeder.SeedData();
+            dataSeeder.SeedData(dataContext);
             await this.next(context);
         }
     }

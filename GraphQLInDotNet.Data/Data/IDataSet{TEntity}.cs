@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphQLInDotNet.Domain.Data
+namespace GraphQLInDotNet.Data
 {
     public interface IDataSet<TEntity> where TEntity : IEntity
     {

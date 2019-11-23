@@ -1,6 +1,6 @@
 ﻿using GraphQlInDotNet.Data.InMemory.Data;
+using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Models;
-using GraphQLInDotNet.Domain.Data;
 using System;
 using System.Collections.Generic;
 
@@ -12,10 +12,22 @@ namespace GraphQlInDotNet.Domain.InMemory.Data
 
         public IDataSet<Category> Categories { get; } = new CategoriesDataSet();
 
+        public IDataSet<Artist> Artists => new InMemoryDataSet<Artist>();
+
+        public IDataSet<Album> Albums => new InMemoryDataSet<Album>();
+
+        public IDataSet<Track> Tracks => new InMemoryDataSet<Track>();
+
+        public IDataSet<Genre> Genres => new InMemoryDataSet<Genre>();
+
         public InMemoryDataContext()
         {
             dataSetsDictionary = new Dictionary<Type, object>{
-                { typeof(Category), Categories}
+                { typeof(Category), Categories},
+                { typeof(Genre), Genres},
+                { typeof(Track), Tracks},
+                { typeof(Album), Albums},
+                { typeof(Artist), Albums},
             };
         }
 

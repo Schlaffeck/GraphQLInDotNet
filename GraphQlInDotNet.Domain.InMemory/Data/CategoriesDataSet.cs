@@ -1,12 +1,9 @@
 ﻿using GraphQlInDotNet.Domain.InMemory.Data;
 using GraphQLInDotNet.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GraphQlInDotNet.Data.InMemory.Data
 {
-    class CategoriesDataSet : InMemoryDataSet<Category>
+    internal class CategoriesDataSet : InMemoryDataSet<Category>
     {
         public override int Add(Category entity)
         {

@@ -1,7 +1,6 @@
 ﻿using GraphQlInDotNet.Data.InMemory.Seed;
 using GraphQlInDotNet.Domain.InMemory.Data;
 using GraphQLInDotNet.Data;
-using GraphQLInDotNet.Domain.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GraphQlInDotNet.Domain.InMemory

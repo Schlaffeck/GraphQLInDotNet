@@ -1,6 +1,6 @@
 ﻿using GraphQlInDotNet.Common.Queries;
 using GraphQLInDotNet.Data.Models;
-using GraphQLInDotNet.Domain.Data;
+using GraphQLInDotNet.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
