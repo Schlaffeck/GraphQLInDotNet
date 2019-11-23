@@ -6,6 +6,7 @@ using SpotifyApi.NetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace Spotify.Data.Seed
 {
     public class RingobotSpotifyApiDataSeeder : ISeeder
     {
+        private bool seeded = false;
         private HttpClient httpClient;
         private AccountsService apiService;
 
@@ -23,25 +25,83 @@ namespace Spotify.Data.Seed
             this.apiService = new AccountsService(httpClient, new SpotifyConfig());
         }
 
-        public  async Task SeedDataAsync(IDataContext dataContext)
+        public async Task SeedDataAsync(IDataContext dataContext)
+        {
+            if(seeded)
+            {
+                return;
+            }
+
+            seeded = true;
+
+            await AddGenres(dataContext);
+            await AddArtists(dataContext);
+            await dataContext.SaveChangesAsync();
+        }
+        
+        private async Task AddGenres(IDataContext dataContext)
+        {
+            var dataFile = Files.FIlesResource.genres;
+            var names = dataFile.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var name in names)
+            {
+                await AddGenreIfNotExists(dataContext, name);
+            }
+        }
+
+        private async Task AddGenreIfNotExists(IDataContext dataContext, string genreName)
+        {
+            if (dataContext.Genres.Query().Any(g => g.Name == genreName))
+            {
+                return;
+            }
+
+            dataContext.Genres.Add(Mapping.MapperHelper.MapToGenre(genreName));
+        }
+
+        private async Task AddArtists(IDataContext dataContext)
         {
             var search = new SearchApi(this.httpClient, this.apiService);
 
             var bandsFile = Files.FIlesResource.bands;
-            var bands = bandsFile.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+            var artistNames = bandsFile.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var band in bands)
+            foreach (var artistName in artistNames)
             {
-                var bandData = await search.Search(query: band, "artist");
+                await AddArtistIfNotExistsAsync(dataContext, search, artistName);
             }
+        }
+
+        private async Task AddArtistIfNotExistsAsync(IDataContext dataContext, SearchApi search, string name)
+        {
+            if (dataContext.Artists.Query().Any(a => a.Name == name))
+            {
+                return;
+            }
+
+            var bandData = await search.Search(query: name, "artist");
+            var spotifyArtist = bandData.Artists.Items.FirstOrDefault();
+            if (spotifyArtist == null)
+            {
+                return;
+            }
+            if(dataContext.Artists.Query().Any(a => a.ExternalId == spotifyArtist.Id))
+            {
+                return;
+            }
+
+            var artist = Mapping.MapperHelper.MapToArtist(spotifyArtist);
+            dataContext.Artists.Add(artist);
         }
 
         private class SpotifyConfig : IConfiguration
         {
-            public string this[string key] {
+            public string this[string key]
+            {
                 get
                 {
-                    switch(key)
+                    switch (key)
                     {
                         case nameof(SpotifyApiClientId): return SpotifyApiClientId;
                         case nameof(SpotifyApiClientSecret): return SpotifyApiClientSecret;

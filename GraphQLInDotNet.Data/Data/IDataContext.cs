@@ -1,4 +1,5 @@
 ﻿using GraphQLInDotNet.Data.Models;
+using System.Threading.Tasks;
 
 namespace GraphQLInDotNet.Data
 {
@@ -15,5 +16,7 @@ namespace GraphQLInDotNet.Data
         IDataSet<Track> Tracks { get; }
 
         IDataSet<Genre> Genres { get; }
+
+        Task SaveChangesAsync();
     }
 }

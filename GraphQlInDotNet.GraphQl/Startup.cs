@@ -41,7 +41,7 @@ namespace GraphQlInDotNet.GraphQl
             if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseMiddleware<SeedDataMiddleware>();
+                app.UseMiddleware<SeedDataMiddleware>();
             }
 
             // enable this if you want tu support subscription.

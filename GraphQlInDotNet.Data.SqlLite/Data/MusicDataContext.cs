@@ -3,6 +3,7 @@ using GraphQLInDotNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Data.EntityFramework.Data
 {
@@ -11,15 +12,15 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         private readonly IDictionary<Type, object> dataSetsDictionary;
         private readonly DomainDbContext domainDbContext;
 
-        public IDataSet<Category> Categories => new DataSet<Category>(this.domainDbContext);
+        public IDataSet<Category> Categories { get; }
 
-        public IDataSet<Artist> Artists => new DataSet<Artist>(this.domainDbContext);
+        public IDataSet<Artist> Artists { get; }
 
-        public IDataSet<Album> Albums => new DataSet<Album>(this.domainDbContext);
+        public IDataSet<Album> Albums { get; }
 
-        public IDataSet<Track> Tracks => new DataSet<Track>(this.domainDbContext);
+        public IDataSet<Track> Tracks { get; }
 
-        public IDataSet<Genre> Genres => new DataSet<Genre>(this.domainDbContext);
+        public IDataSet<Genre> Genres { get; }
 
         IDataSet<TEntity> IDataContext.Set<TEntity>()
         {
@@ -32,6 +33,11 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
             return default;
         }
 
+        public async Task SaveChangesAsync()
+        {
+            await this.domainDbContext.SaveChangesAsync();
+        }
+
         public MusicDataContext(DomainDbContext domainDbContext)
         {
             dataSetsDictionary = new Dictionary<Type, object>{
@@ -42,6 +48,11 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
                 { typeof(Artist), Albums},
             };
             this.domainDbContext = domainDbContext;
+            this.Albums = new DataSet<Album>(this.domainDbContext);
+            this.Categories = new DataSet<Category>(this.domainDbContext);
+            this.Genres = new DataSet<Genre>(this.domainDbContext);
+            this.Artists = new DataSet<Artist>(this.domainDbContext);
+            this.Tracks = new DataSet<Track>(this.domainDbContext);
         }
     }
 }

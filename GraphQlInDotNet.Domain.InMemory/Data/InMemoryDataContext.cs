@@ -3,6 +3,7 @@ using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Domain.InMemory.Data
 {
@@ -40,6 +41,11 @@ namespace GraphQlInDotNet.Domain.InMemory.Data
             }
 
             return default;
+        }
+
+        public Task SaveChangesAsync()
+        {
+            return Task.CompletedTask;
         }
     }
 }
