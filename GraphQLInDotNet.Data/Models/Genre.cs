@@ -9,7 +9,6 @@ namespace GraphQLInDotNet.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(50)]
         public string Name { get; set; }
 
         [InverseProperty(nameof(ArtistGenre.Genre))]

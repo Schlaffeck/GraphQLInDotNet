@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="SpotifyApi.NetCore" Version="3.0.1-preview" />
-    <PackageReference Include="SpotifyAPI.Web" Version="4.2.2" />
-    <PackageReference Include="SpotifyAPI.Web.Auth" Version="4.2.2" />
   </ItemGroup>
 
   <ItemGroup>

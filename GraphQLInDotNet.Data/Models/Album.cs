@@ -11,7 +11,6 @@ namespace GraphQLInDotNet.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(50)]
         public string Title { get; set; }
 
         public DateTimeOffset ReleaseDate { get; set; }

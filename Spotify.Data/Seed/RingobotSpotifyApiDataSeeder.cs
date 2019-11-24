@@ -15,6 +15,10 @@ using SpotifyTrack = SpotifyApi.NetCore.Track;
 using GraphQLInDotNet.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using SearchApi = SpotifyApi.NetCore.SearchApi;
+using SpotifyApi.NetCore;
+using Artist = GraphQLInDotNet.Data.Models.Artist;
+using Album = GraphQLInDotNet.Data.Models.Album;
+using Newtonsoft.Json;
 
 namespace Spotify.Data.Seed
 {
@@ -41,7 +45,6 @@ namespace Spotify.Data.Seed
 
             await AddGenres(dataContext);
             await AddArtistsAsync(dataContext);
-            await dataContext.SaveChangesAsync();
         }
         
         private async Task AddGenres(IDataContext dataContext)
@@ -53,6 +56,7 @@ namespace Spotify.Data.Seed
             {
                 await AddGenreIfNotExists(dataContext, name);
             }
+            await dataContext.SaveChangesAsync();
         }
 
         private async Task AddGenreIfNotExists(IDataContext dataContext, string genreName)
@@ -78,7 +82,8 @@ namespace Spotify.Data.Seed
             }
         }
 
-        private async Task AddArtistIfNotExistsAsync(IDataContext dataContext, SpotifyApi.NetCore.SearchApi search, string name)
+        private async Task AddArtistIfNotExistsAsync(IDataContext dataContext, 
+            SearchApi search, string name)
         {
             var bandData = await search.Search(query: name, "artist");
             var spotifyArtist = bandData.Artists.Items.FirstOrDefault();
@@ -90,6 +95,7 @@ namespace Spotify.Data.Seed
             var artistInDb = await dataContext.Artists.Query()
                 .Include(a => a.Albums)
                 .Include(a => a.Genres)
+                .ThenInclude(ag => ag.Genre)
                 .FirstOrDefaultAsync(a => a.ExternalId == spotifyArtist.Id);
             if (artistInDb is null)
             {
@@ -99,9 +105,10 @@ namespace Spotify.Data.Seed
 
             await AddArtistGenresAsync(dataContext, artistInDb, spotifyArtist);
             await AddArtistAlbumsAsync(dataContext, search, artistInDb);
+            await dataContext.SaveChangesAsync();
         }
 
-        private async Task AddArtistGenresAsync(IDataContext dataContext, Artist artistInDb, SpotifyArtist spotifyArtist)
+        private async Task AddArtistGenresAsync(IDataContext dataContext, GraphQLInDotNet.Data.Models.Artist artistInDb, SpotifyArtist spotifyArtist)
         {
             foreach(var genre in spotifyArtist.Genres)
             {
@@ -165,13 +172,14 @@ namespace Spotify.Data.Seed
             SearchApi search,
             Album albumInDb)
         {
-            var albumTracksApiResult = await search.Search($"album:{albumInDb.Title}", "track");
-            if(albumInDb.Tracks.Count() >= albumTracksApiResult.Tracks.Total)
+            var albumApi = new AlbumsApi(this.httpClient, this.apiService);
+            var albumTracksApiResult = await albumApi.GetAlbumTracks<TracksSearchResult>(albumInDb.ExternalId); //await search.Search($"album:{albumInDb.Title}", "track");
+            if (albumInDb.Tracks.Count() >= albumTracksApiResult.Total)
             {
                 return;
             }
 
-            foreach (var spotifyTrack in albumTracksApiResult.Tracks.Items)
+            foreach (var spotifyTrack in albumTracksApiResult.Items)
             {
                 await AddAlbumTrackAsync(dataContext, albumInDb, spotifyTrack);
             }
@@ -227,6 +235,12 @@ namespace Spotify.Data.Seed
             {
                 throw new NotImplementedException();
             }
+        }
+
+        private class SpotifyAlbumWithTracks : SpotifyAlbum
+        {
+            [JsonProperty("tracks")]
+            public SpotifyTrack[] Tracks { get; set; }
         }
     }
 }

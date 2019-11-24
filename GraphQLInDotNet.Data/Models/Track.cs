@@ -9,7 +9,6 @@ namespace GraphQLInDotNet.Data.Models
         [Key]
         public int Id { get; set; }
 
-        [StringLength(100)]
         public string Title { get; set; }
 
         public TimeSpan Duration { get; set; }

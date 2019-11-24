@@ -23,7 +23,7 @@ namespace Spotify.Data.Mapping
             {
                 Title = spotifyAlbum.Name,
                 ExternalId = spotifyAlbum.Id,
-                ReleaseDate = DateTimeOffset.ParseExact(spotifyAlbum.ReleaseDate, "yyyy-MM-dd", null),
+                ReleaseDate = ParseDateTime(spotifyAlbum.ReleaseDate, spotifyAlbum.ReleaseDatePrecision),
                 UrlLink = spotifyAlbum.Uri,
                 Tracks = new List<Track>()
             };
@@ -38,6 +38,26 @@ namespace Spotify.Data.Mapping
                 ExternalId = spotifyTrack.Id,
                 UrlLink = spotifyTrack.Uri,
             };
+        }
+
+        public static DateTimeOffset ParseDateTime(string input, string spotifyPrecision)
+        {
+            if(spotifyPrecision == "day")
+            {
+                return DateTimeOffset.ParseExact(input, "yyyy-MM-dd", null);
+            }
+
+            if (spotifyPrecision == "month")
+            {
+                return DateTimeOffset.ParseExact(input+"-01", "yyyy-MM-dd", null);
+            }
+
+            if (spotifyPrecision == "year")
+            {
+                return new DateTimeOffset(int.Parse(input), 1, 1, 0, 0, 0, TimeSpan.Zero);
+            }
+
+            return DateTimeOffset.MinValue;
         }
 
         public static Genre MapToGenre(string name)
