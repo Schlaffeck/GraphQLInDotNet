@@ -10,6 +10,7 @@ namespace GraphQlInDotNet.GraphQl.Middleware
     public class SeedDataMiddleware
     {
         private readonly RequestDelegate next;
+        private bool dataSeeded = false;
 
         public SeedDataMiddleware(RequestDelegate next)
         {
@@ -18,7 +19,11 @@ namespace GraphQlInDotNet.GraphQl.Middleware
 
         public async Task InvokeAsync(HttpContext context, ISeeder dataSeeder, IDataContext dataContext)
         {
-            await dataSeeder.SeedDataAsync(dataContext);
+            if (!dataSeeded)
+            {
+                dataSeeded = true;
+                await dataSeeder.SeedDataAsync(dataContext);
+            }
             await this.next(context);
         }
     }

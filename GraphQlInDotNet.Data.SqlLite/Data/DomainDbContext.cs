@@ -30,6 +30,18 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
             modelBuilder.Entity<Artist>()
                 .HasIndex(g => g.Name)
                 .IsUnique(true);
+
+            modelBuilder.Entity<Artist>()
+                .HasIndex(a => a.ExternalId)
+                .IsUnique();
+
+            modelBuilder.Entity<Album>()
+                .HasIndex(a => a.ExternalId)
+                .IsUnique();
+
+            modelBuilder.Entity<Track>()
+                .HasIndex(a => a.ExternalId)
+                .IsUnique();
         }
     }
 }

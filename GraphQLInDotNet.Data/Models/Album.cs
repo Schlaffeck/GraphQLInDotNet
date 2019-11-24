@@ -25,5 +25,7 @@ namespace GraphQLInDotNet.Data.Models
 
         [ForeignKey(nameof(ArtistId))]
         public Artist Artist { get; set; }
+
+        public string UrlLink { get; set; }
     }
 }

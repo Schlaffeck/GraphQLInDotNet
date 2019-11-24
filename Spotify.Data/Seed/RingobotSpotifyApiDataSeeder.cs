@@ -1,7 +1,6 @@
 ﻿using GraphQLInDotNet.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using SpotifyApi.NetCore;
 using SpotifyApi.NetCore.Authorization;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,12 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using SpotifyArtist = SpotifyApi.NetCore.Artist;
+using SpotifyAlbum = SpotifyApi.NetCore.Album;
+using SpotifyTrack = SpotifyApi.NetCore.Track;
+using GraphQLInDotNet.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using SearchApi = SpotifyApi.NetCore.SearchApi;
 
 namespace Spotify.Data.Seed
 {
@@ -35,7 +40,7 @@ namespace Spotify.Data.Seed
             seeded = true;
 
             await AddGenres(dataContext);
-            await AddArtists(dataContext);
+            await AddArtistsAsync(dataContext);
             await dataContext.SaveChangesAsync();
         }
         
@@ -60,9 +65,9 @@ namespace Spotify.Data.Seed
             dataContext.Genres.Add(Mapping.MapperHelper.MapToGenre(genreName));
         }
 
-        private async Task AddArtists(IDataContext dataContext)
+        private async Task AddArtistsAsync(IDataContext dataContext)
         {
-            var search = new SearchApi(this.httpClient, this.apiService);
+            var search = new SpotifyApi.NetCore.SearchApi(this.httpClient, this.apiService);
 
             var bandsFile = Files.FIlesResource.bands;
             var artistNames = bandsFile.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
@@ -73,26 +78,118 @@ namespace Spotify.Data.Seed
             }
         }
 
-        private async Task AddArtistIfNotExistsAsync(IDataContext dataContext, SearchApi search, string name)
+        private async Task AddArtistIfNotExistsAsync(IDataContext dataContext, SpotifyApi.NetCore.SearchApi search, string name)
         {
-            if (dataContext.Artists.Query().Any(a => a.Name == name))
-            {
-                return;
-            }
-
             var bandData = await search.Search(query: name, "artist");
             var spotifyArtist = bandData.Artists.Items.FirstOrDefault();
             if (spotifyArtist == null)
             {
                 return;
             }
-            if(dataContext.Artists.Query().Any(a => a.ExternalId == spotifyArtist.Id))
+
+            var artistInDb = await dataContext.Artists.Query()
+                .Include(a => a.Albums)
+                .Include(a => a.Genres)
+                .FirstOrDefaultAsync(a => a.ExternalId == spotifyArtist.Id);
+            if (artistInDb is null)
+            {
+                artistInDb = Mapping.MapperHelper.MapToArtist(spotifyArtist);
+                dataContext.Artists.Add(artistInDb);
+            }
+
+            await AddArtistGenresAsync(dataContext, artistInDb, spotifyArtist);
+            await AddArtistAlbumsAsync(dataContext, search, artistInDb);
+        }
+
+        private async Task AddArtistGenresAsync(IDataContext dataContext, Artist artistInDb, SpotifyArtist spotifyArtist)
+        {
+            foreach(var genre in spotifyArtist.Genres)
+            {
+                if(!artistInDb.Genres.Any(g => g.Genre.Name == genre))
+                {
+                    var genreInDb = dataContext.Genres.Query().FirstOrDefault(g => g.Name == genre);
+                    if(genreInDb is null)
+                    {
+                        genreInDb = Mapping.MapperHelper.MapToGenre(genre);
+                        dataContext.Genres.Add(genreInDb);
+                    }
+
+                    artistInDb.Genres.Add(new ArtistGenre { Artist = artistInDb, Genre = genreInDb });
+                }
+            }
+        }
+
+        private async Task AddArtistAlbumsAsync(
+            IDataContext dataContext,
+            SearchApi search, 
+            Artist artist)
+        {
+            var albumsSearchResult = await search.Search($"artist:\'{artist.Name}\'", "album");
+            if(albumsSearchResult.Albums.Total <= artist.Albums.Count())
             {
                 return;
             }
 
-            var artist = Mapping.MapperHelper.MapToArtist(spotifyArtist);
-            dataContext.Artists.Add(artist);
+            foreach(var spotifyAlbum in albumsSearchResult.Albums.Items)
+            {
+                await AddArtistAlbumAsync(dataContext, search, artist, spotifyAlbum);
+            }
+        }
+
+        private async Task AddArtistAlbumAsync(
+            IDataContext dataContext,
+            SearchApi search,
+            Artist artist,
+            SpotifyAlbum spotifyAlbum)
+        {
+            var albumInDb = await dataContext.Albums.Query()
+                .Include(a => a.Tracks)
+                .FirstOrDefaultAsync(a => a.ExternalId == spotifyAlbum.Id);
+            if(albumInDb == null)
+            {
+                albumInDb = Mapping.MapperHelper.MapToAlbum(spotifyAlbum);
+                dataContext.Albums.Add(albumInDb);
+            }
+            albumInDb.Artist = artist;
+
+            if(albumInDb.Tracks.Any())
+            {
+                return;
+            }
+
+            await AddAlbumTracksAsync(dataContext, search, albumInDb);
+        }
+
+        private async Task AddAlbumTracksAsync(
+            IDataContext dataContext,
+            SearchApi search,
+            Album albumInDb)
+        {
+            var albumTracksApiResult = await search.Search($"album:{albumInDb.Title}", "track");
+            if(albumInDb.Tracks.Count() >= albumTracksApiResult.Tracks.Total)
+            {
+                return;
+            }
+
+            foreach (var spotifyTrack in albumTracksApiResult.Tracks.Items)
+            {
+                await AddAlbumTrackAsync(dataContext, albumInDb, spotifyTrack);
+            }
+        }
+
+        private async Task AddAlbumTrackAsync(IDataContext dataContext,
+            Album albumInDb,
+            SpotifyTrack spotifyTrack)
+        {
+            if(albumInDb.Tracks.Any(t => t.Title == spotifyTrack.Name))
+            {
+                return;
+            }
+
+            var trackInDb = Mapping.MapperHelper.MapToTrack(spotifyTrack);
+            albumInDb.Tracks.Add(trackInDb);
+            trackInDb.Album = albumInDb;
+            dataContext.Tracks.Add(trackInDb);
         }
 
         private class SpotifyConfig : IConfiguration
