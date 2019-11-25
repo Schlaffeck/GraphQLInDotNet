@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
     <ProjectReference Include="..\GraphQlInDotNet.Data.SqlLite\GraphQlInDotNet.Data.EntityFramework.csproj" />
-    <ProjectReference Include="..\GraphQlInDotNet.Domain.InMemory\GraphQlInDotNet.Data.InMemory.csproj" />
     <ProjectReference Include="..\GraphQlInDotNet.Schema\GraphQlInDotNet.Schema.csproj" />
     <ProjectReference Include="..\Spotify.Data\Spotify.Data.csproj" />
   </ItemGroup>

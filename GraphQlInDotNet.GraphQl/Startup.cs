@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
 using HotChocolate;
 using GraphQlInDotNet.Catalog;
-using GraphQlInDotNet.Domain.InMemory;
 using GraphQlInDotNet.Schema;
 using GraphQlInDotNet.GraphQl.Middleware;
 using Spotify.Data;
@@ -25,7 +24,6 @@ namespace GraphQlInDotNet.GraphQl
         public void ConfigureServices(IServiceCollection services)
         {
             services.UseSqlServerData(Configuration);
-            //services.UseInMemoryDataSeeder();
             services.UseSpotifyDataSeeder();
             services.AddCatalogDomain();
 
