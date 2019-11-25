@@ -12,8 +12,6 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         private readonly IDictionary<Type, object> dataSetsDictionary;
         private readonly DomainDbContext domainDbContext;
 
-        public IDataSet<Category> Categories { get; }
-
         public IDataSet<Artist> Artists { get; }
 
         public IDataSet<Album> Albums { get; }
@@ -41,7 +39,6 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         public MusicDataContext(DomainDbContext domainDbContext)
         {
             dataSetsDictionary = new Dictionary<Type, object>{
-                { typeof(Category), Categories},
                 { typeof(Genre), Genres},
                 { typeof(Track), Tracks},
                 { typeof(Album), Albums},
@@ -49,7 +46,6 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
             };
             this.domainDbContext = domainDbContext;
             this.Albums = new DataSet<Album>(this.domainDbContext);
-            this.Categories = new DataSet<Category>(this.domainDbContext);
             this.Genres = new DataSet<Genre>(this.domainDbContext);
             this.Artists = new DataSet<Artist>(this.domainDbContext);
             this.Tracks = new DataSet<Track>(this.domainDbContext);

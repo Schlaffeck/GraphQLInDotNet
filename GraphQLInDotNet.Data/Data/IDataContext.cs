@@ -7,7 +7,6 @@ namespace GraphQLInDotNet.Data
     {
         IDataSet<TEntity> Set<TEntity>() where TEntity : IEntity;
 
-        IDataSet<Category> Categories { get; }
 
         IDataSet<Artist> Artists{ get; }
 

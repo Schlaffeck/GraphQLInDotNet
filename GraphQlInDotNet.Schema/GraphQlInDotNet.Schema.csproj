@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GraphQlInDotNet.Catalog\GraphQlInDotNet.Catalog.csproj" />
     <ProjectReference Include="..\GraphQLInDotNet.Data\GraphQLInDotNet.Data.csproj" />
+    <ProjectReference Include="..\GraphQlInDotNet.MusicCatalog\GraphQlInDotNet.MusicCatalog.csproj" />
   </ItemGroup>
 
 </Project>

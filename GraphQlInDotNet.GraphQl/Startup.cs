@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
 using HotChocolate;
-using GraphQlInDotNet.Catalog;
 using GraphQlInDotNet.Schema;
 using GraphQlInDotNet.GraphQl.Middleware;
 using Spotify.Data;
@@ -25,11 +24,10 @@ namespace GraphQlInDotNet.GraphQl
         {
             services.UseSqlServerData(Configuration);
             services.UseSpotifyDataSeeder();
-            services.AddCatalogDomain();
 
             // Add GraphQL Services
             services.AddGraphQL(sp => SchemaBuilder.New()
-                .AddCatalogDomain()
+                .AddMusicCatalogDomain()
                 .Create());
         }
 
