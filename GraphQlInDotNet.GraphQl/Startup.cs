@@ -8,6 +8,9 @@ using GraphQlInDotNet.GraphQl.Middleware;
 using Spotify.Data;
 using GraphQlInDotNet.Data.EntityFramework;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.WebSockets;
+using HotChocolate.AspNetCore.Subscriptions;
+using HotChocolate.Subscriptions;
 
 namespace GraphQlInDotNet.GraphQl
 {
@@ -23,9 +26,11 @@ namespace GraphQlInDotNet.GraphQl
         public void ConfigureServices(IServiceCollection services)
         {
             services.UseSqlServerData(Configuration);
-            services.UseSpotifyDataSeeder();
+            //services.UseSpotifyDataSeeder();
+            services.AddInMemorySubscriptionProvider();
 
             // Add GraphQL Services
+            services.AddCommonGraphQLTypes();
             services.AddGraphQL(sp => SchemaBuilder.New()
                 .AddMusicCatalogDomain()
                 .Create());
@@ -37,11 +42,11 @@ namespace GraphQlInDotNet.GraphQl
             if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
-                app.UseMiddleware<SeedDataMiddleware>();
+                //app.UseMiddleware<SeedDataMiddleware>();
             }
 
             // enable this if you want tu support subscription.
-            // app.UseWebSockets();
+            //app.UseWebSockets();
             app.UseGraphQL("/graphql")
             .UsePlayground("/graphql");
         }

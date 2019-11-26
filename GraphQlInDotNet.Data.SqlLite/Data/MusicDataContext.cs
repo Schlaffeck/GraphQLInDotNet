@@ -47,7 +47,7 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
             this.domainDbContext = domainDbContext;
             this.Albums = new DataSet<Album>(this.domainDbContext);
             this.Genres = new DataSet<Genre>(this.domainDbContext);
-            this.Artists = new DataSet<Artist>(this.domainDbContext);
+            this.Artists = new ArtistsDataSet(this.domainDbContext);
             this.Tracks = new DataSet<Track>(this.domainDbContext);
         }
     }

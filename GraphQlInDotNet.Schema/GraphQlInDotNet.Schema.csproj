@@ -5,9 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate" Version="10.1.1" />
-    <PackageReference Include="HotChocolate.Abstractions" Version="10.1.1" />
-    <PackageReference Include="HotChocolate.Types.Filters" Version="10.1.1" />
+    <PackageReference Include="HotChocolate" Version="10.2.0" />
+    <PackageReference Include="HotChocolate.Abstractions" Version="10.2.0" />
+    <PackageReference Include="HotChocolate.Types" Version="10.2.0" />
+    <PackageReference Include="HotChocolate.Types.Filters" Version="10.2.0" />
   </ItemGroup>
 
   <ItemGroup>

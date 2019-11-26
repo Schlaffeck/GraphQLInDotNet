@@ -19,7 +19,7 @@ namespace GraphQLInDotNet.Data.Helpers
 
         public static Artist AssignGenreToArtist(this IDataContext dataContext, Artist artist, string genreName)
         {
-            if(artist.Genres.Any(g => g.Genre.Name == genreName))
+            if(artist.Genres?.Any(g => g.Genre.Name == genreName) == true)
             {
                 return artist;
             }

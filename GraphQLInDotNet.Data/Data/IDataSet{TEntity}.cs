@@ -16,5 +16,7 @@ namespace GraphQLInDotNet.Data
         bool Delete(TEntity entity);
 
         IQueryable<TEntity> Query();
+
+        IQueryable<TEntity> QueryWithIncludes();
     }
 }

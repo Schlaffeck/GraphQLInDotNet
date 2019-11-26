@@ -3,6 +3,7 @@ using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Helpers;
 using GraphQLInDotNet.Data.Models;
 using HotChocolate;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Schema.Catalog
@@ -20,12 +21,15 @@ namespace GraphQlInDotNet.Schema.Catalog
         {
             var newArtist = new Artist
             {
-                Name = input.Name
+                Name = input.Name,
+                Genres = new List<ArtistGenre>()
             };
 
             this.dataContext.AssignGenresToArtist(newArtist, input.Genres);
+            this.dataContext.Artists.Add(newArtist);
             await this.dataContext.SaveChangesAsync();
-            return this.dataContext.Artists.Get(newArtist.Id);
+            var artist = this.dataContext.Artists.Get(newArtist.Id);
+            return artist;
         }
     }
 }

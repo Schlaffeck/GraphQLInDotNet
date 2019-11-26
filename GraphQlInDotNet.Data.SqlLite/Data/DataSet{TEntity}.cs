@@ -6,48 +6,53 @@ using System.Threading.Tasks;
 
 namespace GraphQlInDotNet.Data.EntityFramework.Data
 {
-    class DataSet<TEntity> : IDataSet<TEntity>
+    internal class DataSet<TEntity> : IDataSet<TEntity>
         where TEntity : class, IEntity
     {
-        private readonly DomainDbContext context;
-        private readonly DbSet<TEntity> dbSet;
+        protected DomainDbContext Context { get; private set; }
+        protected DbSet<TEntity> DbSet { get; private set; }
 
         public DataSet(DomainDbContext context)
         {
-            this.context = context;
-            this.dbSet = context.Set<TEntity>();
+            this.Context = context;
+            this.DbSet = context.Set<TEntity>();
         }
 
-        public int Add(TEntity entity)
+        public virtual int Add(TEntity entity)
         {
-            var entityEntry = this.dbSet.Add(entity);
+            var entityEntry = this.DbSet.Add(entity);
             return entityEntry.Entity.Id;
         }
 
-        public bool Delete(TEntity entity)
+        public virtual bool Delete(TEntity entity)
         {
-            this.dbSet.Remove(entity);
+            this.DbSet.Remove(entity);
             return true;
         }
 
-        public TEntity Get(int id)
+        public virtual TEntity Get(int id)
         {
-            return this.dbSet.Find(id);
+            return this.DbSet.Find(id);
         }
 
-        public async Task<TEntity> GetAsync(int id)
+        public virtual async Task<TEntity> GetAsync(int id)
         {
-            return await this.dbSet.FindAsync(id);
+            return await this.DbSet.FindAsync(id);
         }
 
-        public IQueryable<TEntity> Query()
+        public virtual IQueryable<TEntity> Query()
         {
-            return this.dbSet;
+            return this.DbSet;
+        }
+
+        public virtual IQueryable<TEntity> QueryWithIncludes()
+        {
+            return Query();
         }
 
         public bool Update(TEntity entity)
         {
-            this.dbSet.Update(entity);
+            this.DbSet.Update(entity);
             return true;
         }
     }

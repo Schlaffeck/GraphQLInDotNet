@@ -15,7 +15,7 @@ namespace GraphQlInDotNet.Schema.Catalog
 
         public IQueryable<Artist> Artists()
         {
-            return this.dataContext.Artists.Query();
+            return this.dataContext.Artists.QueryWithIncludes();
         }
     }
 }
