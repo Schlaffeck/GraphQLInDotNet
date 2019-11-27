@@ -16,6 +16,7 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         public override IQueryable<Artist> QueryWithIncludes()
         {
             return base.DbSet.Include(a => a.Albums)
+                .ThenInclude(al => al.Tracks)
                 .Include(a => a.Genres)
                 .ThenInclude(g => g.Genre);
         }

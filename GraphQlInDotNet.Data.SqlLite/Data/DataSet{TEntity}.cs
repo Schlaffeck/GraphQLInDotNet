@@ -32,12 +32,12 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
 
         public virtual TEntity Get(int id)
         {
-            return this.DbSet.Find(id);
+            return this.QueryWithIncludes().FirstOrDefault(e => e.Id == id);
         }
 
         public virtual async Task<TEntity> GetAsync(int id)
         {
-            return await this.DbSet.FindAsync(id);
+            return await this.QueryWithIncludes().FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public virtual IQueryable<TEntity> Query()
@@ -54,6 +54,11 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         {
             this.DbSet.Update(entity);
             return true;
+        }
+
+        public IQueryable<TEntity> QueryNoTracking()
+        {
+            return this.DbSet.AsNoTracking();
         }
     }
 }

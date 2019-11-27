@@ -9,6 +9,7 @@
     <PackageReference Include="HotChocolate.Abstractions" Version="10.2.0" />
     <PackageReference Include="HotChocolate.Types" Version="10.2.0" />
     <PackageReference Include="HotChocolate.Types.Filters" Version="10.2.0" />
+    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.2.0" />
   </ItemGroup>
 
   <ItemGroup>

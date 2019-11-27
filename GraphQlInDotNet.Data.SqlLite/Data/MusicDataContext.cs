@@ -45,10 +45,10 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
                 { typeof(Artist), Albums},
             };
             this.domainDbContext = domainDbContext;
-            this.Albums = new DataSet<Album>(this.domainDbContext);
-            this.Genres = new DataSet<Genre>(this.domainDbContext);
+            this.Albums = new AlbumsDataSet(this.domainDbContext);
+            this.Genres = new GenreDataSet(this.domainDbContext);
             this.Artists = new ArtistsDataSet(this.domainDbContext);
-            this.Tracks = new DataSet<Track>(this.domainDbContext);
+            this.Tracks = new TracksDataSet(this.domainDbContext);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace GraphQLInDotNet.Data
 
         IQueryable<TEntity> Query();
 
+        IQueryable<TEntity> QueryNoTracking();
+
         IQueryable<TEntity> QueryWithIncludes();
     }
 }
