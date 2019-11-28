@@ -23,12 +23,16 @@ namespace GraphQlInDotNet.Schema
                 .AddType<TrackType>()
                 .AddType<GenreType>()
                 .AddType<AlbumType>()
-                .AddQueryType<MusicCatalogQuery>(td => td.Field(q => q.Artists(default, default))
-                    //.UsePaging<ArtistType>()
-                    .UseFiltering<ArtistType>(descriptor =>
+                .AddQueryType<MusicCatalogQuery>(td => td.Field(q => q.Artists())
+                    //.UsePaging<Artist>()
+                    .UseFiltering<Artist>(descriptor =>
                     {
-                        descriptor.BindFieldsExplicitly()
-                        .Filter(a => a.Name);
+                        descriptor
+                        .Filter(a => a.Name)
+                        .AllowContains()
+                        .And().AllowEquals()
+                        .And().AllowNotContains()
+                        .And().AllowNotEquals();
                     })
                     .UseSorting<Artist>(descriptor =>
                     {

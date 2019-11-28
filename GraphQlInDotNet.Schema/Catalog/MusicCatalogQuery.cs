@@ -14,11 +14,11 @@ namespace GraphQlInDotNet.Schema.Catalog
             this.dataContext = dataContext;
         }
 
-        public IQueryable<Artist> Artists(int? skip = 0, int? take = 20)
+        public IQueryable<Artist> Artists()
         {
             var query = this.dataContext.Artists.QueryNoTracking();
 
-            return AddSkipTake(query, skip, take);
+            return query;
         }
 
         public IQueryable<AlbumDto> Albums()
@@ -26,15 +26,24 @@ namespace GraphQlInDotNet.Schema.Catalog
             return this.dataContext.Albums.QueryWithIncludes().Select(AlbumDto.Map).AsQueryable();
         }
 
-        public IQueryable<Track> Tracks()
+        public IQueryable<Track> Tracks(int? skip = 0, int? take = 20)
         {
-            return this.dataContext.Tracks.QueryNoTracking();
+            var query = this.dataContext.Tracks.QueryNoTracking();
+
+            return AddSkipTake(query, skip, take);
         }
 
         public IQueryable<Genre> Genres(
+            int? forArtist =null,
             int? skip = 0, int? take = 20, string nameLike = null, GenreOrderBy orderBy = null)
         {
             var query = this.dataContext.Genres.QueryNoTracking();
+
+            if(forArtist.HasValue)
+            {
+                query = query.Where(g => g.Artists.Any(a => a.ArtistId == forArtist));
+            }
+
             if(!string.IsNullOrWhiteSpace(nameLike))
             {
                 query = query.Where(g => g.Name.Contains(nameLike));

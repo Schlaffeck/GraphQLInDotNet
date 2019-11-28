@@ -17,8 +17,10 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
             descriptor.Field(a => a.Name).Type<NonNullType<StringType>>();
             descriptor.Field(a => a.ExternalId).Type<StringType>();
 
-            descriptor.Field(a => a.Genres).Type<NonNullType<ListType<StringType>>>()
-                .Resolver(ctx => ctx.Parent<Artist>().Genres.Select(g => g.Genre.Name));
+            descriptor.Field(a => a.Genres).Type<NonNullType<ListType<GenreType>>>()
+                .Resolver(ctx => ctx.Parent<Artist>().Genres.Select(g => g.Genre))
+                .UseFiltering<Genre>(descriptor => descriptor.BindFieldsExplicitly()
+                    .Filter(g => g.Name));
 
             descriptor.Field(a => a.Albums).Type<NonNullType<ListType<AlbumType>>>()
                 .Resolver(ctx => ctx.Service<IDataContext>().
