@@ -23,24 +23,29 @@ namespace GraphQlInDotNet.Schema
                 .AddType<TrackType>()
                 .AddType<GenreType>()
                 .AddType<AlbumType>()
-                .AddQueryType<MusicCatalogQuery>(td => td.Field(q => q.Artists())
-                    //.UsePaging<Artist>()
-                    .UseFiltering<Artist>(descriptor =>
-                    {
-                        descriptor
-                        .Filter(a => a.Name)
-                        .AllowContains()
-                        .And().AllowEquals()
-                        .And().AllowNotContains()
-                        .And().AllowNotEquals();
-                    })
-                    .UseSorting<Artist>(descriptor =>
-                    {
-                        descriptor
-                        .BindFieldsExplicitly()
-                        .Sortable(a => a.Name);
-                        descriptor.Sortable(a => a.Id);
-                    }))
+                .AddQueryType<MusicCatalogQuery>(td =>
+                {
+                    td.Field(q => q.Artists())
+                        //.UsePaging<Artist>()
+                        .UseFiltering<Artist>(descriptor =>
+                        {
+                            descriptor
+                            .Filter(a => a.Name)
+                            .AllowContains()
+                            .And().AllowEquals()
+                            .And().AllowNotContains()
+                            .And().AllowNotEquals();
+                        })
+                        .UseSorting<Artist>(descriptor =>
+                        {
+                            descriptor
+                            .BindFieldsExplicitly()
+                            .Sortable(a => a.Name);
+                            descriptor.Sortable(a => a.Id);
+                        });
+                    td.Field(q => q.Albums())
+                    .UsePaging<ObjectType<AlbumDto>>();
+                })
                 .AddMutationType<MusicCatalogMutation>();
         }
 
