@@ -13,6 +13,14 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
         {
         }
 
+        public override IQueryable<Artist> QueryNoTracking()
+        {
+            return base.Query()
+                .Include(a => a.Genres)
+                .ThenInclude(g => g.Genre)
+                .AsNoTracking();
+        }
+
         public override IQueryable<Artist> QueryWithIncludes()
         {
             return base.DbSet.Include(a => a.Albums)

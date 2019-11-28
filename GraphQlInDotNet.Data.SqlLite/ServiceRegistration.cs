@@ -10,8 +10,8 @@ namespace GraphQlInDotNet.Data.EntityFramework
     {
         public static IServiceCollection UseSqlServerData(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IDataContext, MusicDataContext>();
-            services.AddScoped<DomainDbContext>();
+            services.AddTransient<IDataContext, MusicDataContext>();
+            services.AddTransient<DomainDbContext>();
             services.AddDbContext<DomainDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection")));
             return services;

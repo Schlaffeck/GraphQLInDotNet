@@ -14,9 +14,11 @@ namespace GraphQlInDotNet.Schema.Catalog
             this.dataContext = dataContext;
         }
 
-        public IQueryable<Artist> Artists()
+        public IQueryable<Artist> Artists(int? skip = 0, int? take = 20)
         {
-            return this.dataContext.Artists.Query();
+            var query = this.dataContext.Artists.QueryNoTracking();
+
+            return AddSkipTake(query, skip, take);
         }
 
         public IQueryable<AlbumDto> Albums()
@@ -29,9 +31,60 @@ namespace GraphQlInDotNet.Schema.Catalog
             return this.dataContext.Tracks.QueryNoTracking();
         }
 
-        public IQueryable<Genre> Genre()
+        public IQueryable<Genre> Genres(
+            int? skip = 0, int? take = 20, string nameLike = null, GenreOrderBy orderBy = null)
         {
-            return this.dataContext.Genres.QueryNoTracking();
+            var query = this.dataContext.Genres.QueryNoTracking();
+            if(!string.IsNullOrWhiteSpace(nameLike))
+            {
+                query = query.Where(g => g.Name.Contains(nameLike));
+            }
+
+            if(orderBy != null)
+            {
+                if(orderBy.Descending)
+                {
+                    query = orderBy.FieldName == GenreOrderBy.FieldNameEnum.Name
+                        ? query.OrderByDescending(g => g.Name)
+                        : query.OrderByDescending(g => g.Id);
+                }
+                else
+                {
+                    query = orderBy.FieldName == GenreOrderBy.FieldNameEnum.Name
+                        ? query.OrderBy(g => g.Name)
+                        : query.OrderBy(g => g.Id);
+                }
+            }
+
+            return AddSkipTake(query, skip, take);
+        }
+
+        public class GenreOrderBy
+        {
+            public enum FieldNameEnum
+            {
+                Name,
+                Id
+            }
+
+            public FieldNameEnum FieldName { get; set; }
+
+            public bool Descending { get; set; }
+        }
+
+        private IQueryable<T> AddSkipTake<T>(IQueryable<T> query, int? skip =0, int? take = 20)
+        {
+            if (skip.HasValue && skip.Value >= 0)
+            {
+                query = query.Skip(skip.Value);
+            }
+
+            if (take.HasValue && take.Value >= 0)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query;
         }
     }
 }

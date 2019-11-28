@@ -23,8 +23,8 @@ namespace GraphQlInDotNet.Schema
                 .AddType<TrackType>()
                 .AddType<GenreType>()
                 .AddType<AlbumType>()
-                .AddQueryType<MusicCatalogQuery>(td => td.Field(q => q.Artists())
-                    .UsePaging<ArtistType>()
+                .AddQueryType<MusicCatalogQuery>(td => td.Field(q => q.Artists(default, default))
+                    //.UsePaging<ArtistType>()
                     .UseFiltering<ArtistType>(descriptor =>
                     {
                         descriptor.BindFieldsExplicitly()
@@ -32,7 +32,8 @@ namespace GraphQlInDotNet.Schema
                     })
                     .UseSorting<Artist>(descriptor =>
                     {
-                        descriptor.BindFieldsExplicitly()
+                        descriptor
+                        .BindFieldsExplicitly()
                         .Sortable(a => a.Name);
                         descriptor.Sortable(a => a.Id);
                     }))

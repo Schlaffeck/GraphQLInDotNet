@@ -50,13 +50,13 @@ namespace GraphQlInDotNet.Data.EntityFramework.Data
             return Query();
         }
 
-        public bool Update(TEntity entity)
+        public virtual bool Update(TEntity entity)
         {
             this.DbSet.Update(entity);
             return true;
         }
 
-        public IQueryable<TEntity> QueryNoTracking()
+        public virtual IQueryable<TEntity> QueryNoTracking()
         {
             return this.DbSet.AsNoTracking();
         }
