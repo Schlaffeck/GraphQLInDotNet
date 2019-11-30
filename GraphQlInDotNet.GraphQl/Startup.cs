@@ -4,13 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
 using HotChocolate;
 using GraphQlInDotNet.Schema;
-using GraphQlInDotNet.GraphQl.Middleware;
-using Spotify.Data;
 using GraphQlInDotNet.Data.EntityFramework;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.WebSockets;
 using HotChocolate.AspNetCore.Subscriptions;
 using HotChocolate.Subscriptions;
+using HotChocolate.AspNetCore.Playground;
 
 namespace GraphQlInDotNet.GraphQl
 {
@@ -34,6 +32,8 @@ namespace GraphQlInDotNet.GraphQl
             services.AddGraphQL(sp => SchemaBuilder.New()
                 .AddMusicCatalogDomain()
                 .Create());
+            services
+                .AddGraphQLSubscriptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,9 +46,22 @@ namespace GraphQlInDotNet.GraphQl
             }
 
             // enable this if you want tu support subscription.
-            //app.UseWebSockets();
-            app.UseGraphQL("/graphql")
-            .UsePlayground("/graphql");
+            app.UseWebSockets();
+            app.UseGraphQLSubscriptions(new SubscriptionMiddlewareOptions
+            {
+                Path = "/"
+            });
+            app.UseGraphQL(new QueryMiddlewareOptions
+            {
+                EnableSubscriptions = true,
+                Path = "/graphql",
+                SubscriptionPath = "/"
+            })
+            .UsePlayground(new PlaygroundOptions { 
+                EnableSubscription = true,
+                QueryPath = "/graphql",
+                SubscriptionPath = "/"
+            });
         }
     }
 }

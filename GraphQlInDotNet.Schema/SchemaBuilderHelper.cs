@@ -46,7 +46,8 @@ namespace GraphQlInDotNet.Schema
                     td.Field(q => q.Albums())
                     .UsePaging<ObjectType<AlbumDto>>();
                 })
-                .AddMutationType<MusicCatalogMutation>();
+                .AddMutationType<MusicCatalogMutation>()
+                .AddSubscriptionType< MusicCatalogSubscription>();
         }
 
         public static IServiceCollection AddCommonGraphQLTypes(this IServiceCollection services)
