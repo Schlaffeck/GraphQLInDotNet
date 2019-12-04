@@ -29,7 +29,6 @@ namespace GraphQlInDotNet.GraphQl
 
             // Add GraphQL Services
             services.AddGraphQL(sp => SchemaBuilder.New()
-            .BindClrType<TimeSpan, DateTimeType>()
                 .Create());
         }
 

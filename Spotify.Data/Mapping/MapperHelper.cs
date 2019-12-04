@@ -34,7 +34,6 @@ namespace Spotify.Data.Mapping
             return new Track
             {
                 Title = spotifyTrack.Name,
-                Duration = TimeSpan.FromMilliseconds(spotifyTrack.DurationMs),
                 ExternalId = spotifyTrack.Id,
                 UrlLink = spotifyTrack.Uri,
             };

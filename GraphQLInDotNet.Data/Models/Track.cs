@@ -11,8 +11,6 @@ namespace GraphQLInDotNet.Data.Models
 
         public string Title { get; set; }
 
-        public TimeSpan Duration { get; set; }
-
         public string UrlLink { get; set; }
 
         public string ExternalId { get; set; }

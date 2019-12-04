@@ -16,7 +16,6 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
         protected override void Configure(IObjectTypeDescriptor<Track> descriptor)
         {
             descriptor.Field(t => t.ExternalId).Type<StringType>();
-            descriptor.Field(t => t.Duration).Type<DateTimeType>();
             descriptor.Field(t => t.Id).Type<IdType>();
             descriptor.Field(t => t.UrlLink).Type<UrlType>();
             descriptor.Field(t => t.Title).Type<NonNullType<StringType>>();
