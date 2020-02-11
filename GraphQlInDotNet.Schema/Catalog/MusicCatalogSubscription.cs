@@ -9,5 +9,10 @@ namespace GraphQlInDotNet.Schema.Catalog
         {
             return (Album)eventMessage.Payload;
         }
+
+        public Artist OnNewArtistInGenreCreated(int genreId, IEventMessage eventMessage)
+        {
+            return (Artist)eventMessage.Payload;
+        }
     }
 }

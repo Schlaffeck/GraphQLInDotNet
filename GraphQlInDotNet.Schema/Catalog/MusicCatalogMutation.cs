@@ -33,6 +33,10 @@ namespace GraphQlInDotNet.Schema.Catalog
             this.dataContext.Artists.Add(newArtist);
             await this.dataContext.SaveChangesAsync();
             var artist = this.dataContext.Artists.Get(newArtist.Id);
+            foreach (var genre in artist.Genres)
+            {
+                await this.eventSender.SendAsync(new NewArtistInGenreCreatedMessage(genre.GenreId, artist));
+            }
             return artist;
         }
 
