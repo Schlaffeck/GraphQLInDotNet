@@ -29,6 +29,7 @@ namespace GraphQlInDotNet.GraphQl
 
             // Add GraphQL Services
             services.AddGraphQL(sp => SchemaBuilder.New()
+            .AddQueryType<Query>()
                 .Create());
         }
 

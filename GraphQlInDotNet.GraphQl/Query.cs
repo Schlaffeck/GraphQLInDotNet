@@ -18,7 +18,7 @@ namespace GraphQlInDotNet.GraphQl
 
         public IQueryable<Artist> Artists(int? skip = 0, int? take = 10)
         {
-            var quer = this.dataContext.Artists.QueryNoTracking();
+            var quer = this.dataContext.Artists.QueryWithIncludes();
 
             return AddSkipTake(quer, skip, take);
         }
