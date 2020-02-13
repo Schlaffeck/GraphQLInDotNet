@@ -26,10 +26,10 @@ namespace GraphQlInDotNet.Schema
                 .AddQueryType<MusicCatalogQuery>(td =>
                 {
                     td.Field(q => q.Artists())
-                        //.UsePaging<Artist>()
                         .UseFiltering<Artist>(descriptor =>
                         {
                             descriptor
+                            .BindFieldsExplicitly()
                             .Filter(a => a.Name)
                             .AllowContains()
                             .And().AllowEquals()

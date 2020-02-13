@@ -1,4 +1,5 @@
 ﻿using GraphQLInDotNet.Data;
+using GraphQLInDotNet.Data.Helpers;
 using GraphQLInDotNet.Data.Models;
 using HotChocolate;
 using System;
@@ -24,15 +25,16 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
 
         public int ArtistId { get; set; }
 
-        public async Task<Artist> Artist([Service] IDataContext dataContext)
-        {
-            return await dataContext.Artists.GetAsync(this.ArtistId);
-        }
+        // we do not want to reveal reference back to artist
+        //public async Task<Artist> Artist([Service] IDataContext dataContext)
+        //{
+        //    return await dataContext.Artists.GetAsync(this.ArtistId);
+        //}
 
-        public IQueryable<Track> Tracks([Service] IDataContext dataContext)
+        public IQueryable<Track> Tracks([Service] IDataContext dataContext, int? skip = 0, int? take = 0)
         {
             return dataContext.Tracks.QueryNoTracking()
-                .Where(t => t.AlbumId == Id);
+                .Where(t => t.AlbumId == Id).AddSkipTake(skip, take);
         }
 
         internal static AlbumDto Map(Album album)
@@ -43,7 +45,7 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
                 ArtistId = album.ArtistId,
                 ExternalId = album.ExternalId,
                 ReleaseDate = album.ReleaseDate,
-                UrlLink = new Uri(album.UrlLink),
+                UrlLink = album.UrlLink != null ? new Uri(album.UrlLink) : null,
                 Title = album.Title
             };
         }

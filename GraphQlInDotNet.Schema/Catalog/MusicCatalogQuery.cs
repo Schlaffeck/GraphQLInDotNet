@@ -1,5 +1,6 @@
 ﻿using GraphQlInDotNet.Schema.Catalog.Types;
 using GraphQLInDotNet.Data;
+using GraphQLInDotNet.Data.Helpers;
 using GraphQLInDotNet.Data.Models;
 using System.Linq;
 
@@ -30,7 +31,7 @@ namespace GraphQlInDotNet.Schema.Catalog
         {
             var query = this.dataContext.Tracks.QueryNoTracking();
 
-            return AddSkipTake(query, skip, take);
+            return query.AddSkipTake(skip, take);
         }
 
         public IQueryable<Genre> Genres(
@@ -65,7 +66,7 @@ namespace GraphQlInDotNet.Schema.Catalog
                 }
             }
 
-            return AddSkipTake(query, skip, take);
+            return query.AddSkipTake(skip, take);
         }
 
         public class GenreOrderBy
@@ -81,19 +82,5 @@ namespace GraphQlInDotNet.Schema.Catalog
             public bool Descending { get; set; }
         }
 
-        private IQueryable<T> AddSkipTake<T>(IQueryable<T> query, int? skip =0, int? take = 20)
-        {
-            if (skip.HasValue && skip.Value >= 0)
-            {
-                query = query.Skip(skip.Value);
-            }
-
-            if (take.HasValue && take.Value >= 0)
-            {
-                query = query.Take(take.Value);
-            }
-
-            return query;
-        }
     }
 }

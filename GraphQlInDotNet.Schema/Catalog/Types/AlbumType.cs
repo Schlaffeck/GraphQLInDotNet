@@ -1,5 +1,6 @@
 ﻿using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Models;
+using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,12 +20,21 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
             descriptor.Field(a => a.Id).Type<NonNullType<IdType>>();
             descriptor.Field(a => a.Title).Type<NonNullType<StringType>>();
             descriptor.Field(a => a.ReleaseDate).Type<NonNullType<DateType>>();
+
             descriptor.Field(a => a.Artist).Type<NonNullType<ArtistType>>()
-                .Resolver(async ctx => await ctx.Service<IDataContext>()
-                .Artists.QueryNoTracking().FirstOrDefaultAsync(a => a.Id == ctx.Parent<Album>().ArtistId));
+                .Resolver(async ctx => 
+                    await ctx.Service<IDataContext>()
+                        .Artists.QueryNoTracking()
+                            .FirstOrDefaultAsync(a => a.Id == ctx.Parent<Album>().ArtistId));
+
             descriptor.Field(ctx => ctx.Tracks).Type<NonNullType<ListType<TrackType>>>()
-                .Resolver(ctx => ctx.Service<IDataContext>()
-                .Tracks.QueryNoTracking().Where(t => t.AlbumId == ctx.Parent<Album>().Id));
+                .Resolver(GetAlbumTracks);
+        }
+
+        private IQueryable<Track> GetAlbumTracks(IResolverContext ctx)
+        {
+            return ctx.Service<IDataContext>()
+                .Tracks.QueryNoTracking().Where(t => t.AlbumId == ctx.Parent<Album>().Id);
         }
     }
 }
