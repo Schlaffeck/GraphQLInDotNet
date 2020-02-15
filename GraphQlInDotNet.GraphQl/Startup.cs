@@ -27,7 +27,6 @@ namespace GraphQlInDotNet.GraphQl
         {
             services.UseSqlServerData(Configuration);
             //services.UseSpotifyDataSeeder();
-            services.AddInMemorySubscriptionProvider();
 
             // Add GraphQL Services
             services.AddCommonGraphQLTypes();
