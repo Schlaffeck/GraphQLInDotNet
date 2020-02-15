@@ -9,6 +9,7 @@ using HotChocolate.Types.Relay;
 using HotChocolate.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using GraphQlInDotNet.Schema.Catalog.Types.Filter;
 
 namespace GraphQlInDotNet.Schema
 {
@@ -31,6 +32,7 @@ namespace GraphQlInDotNet.Schema
                             descriptor
                             .BindFieldsExplicitly()
                             .Filter(a => a.Name)
+                            .BindFiltersExplicitly()
                             .AllowContains()
                             .And().AllowEquals()
                             .And().AllowNotContains()

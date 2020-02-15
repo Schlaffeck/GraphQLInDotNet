@@ -1,7 +1,9 @@
-﻿using GraphQLInDotNet.Data;
+﻿using GraphQlInDotNet.Schema.Catalog.Types.Filter;
+using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Helpers;
 using GraphQLInDotNet.Data.Models;
 using HotChocolate;
+using HotChocolate.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +33,8 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
         //    return await dataContext.Artists.GetAsync(this.ArtistId);
         //}
 
+        [UseSorting]
+        [UseFiltering(FilterType = typeof(TrackFilterType))]
         public IQueryable<Track> Tracks([Service] IDataContext dataContext, int? skip = 0, int? take = 0)
         {
             return dataContext.Tracks.QueryNoTracking()

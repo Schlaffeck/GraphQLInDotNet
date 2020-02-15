@@ -1,7 +1,9 @@
 ﻿using GraphQlInDotNet.Schema.Catalog.Types;
+using GraphQlInDotNet.Schema.Catalog.Types.Filter;
 using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Helpers;
 using GraphQLInDotNet.Data.Models;
+using HotChocolate.Types;
 using System.Linq;
 
 namespace GraphQlInDotNet.Schema.Catalog
@@ -22,6 +24,7 @@ namespace GraphQlInDotNet.Schema.Catalog
             return query;
         }
 
+        [UseFiltering(FilterType = typeof(AlbumDtoFilterType))]
         public IQueryable<AlbumDto> Albums()
         {
             return this.dataContext.Albums.QueryWithIncludes().Select(AlbumDto.Map).AsQueryable();
