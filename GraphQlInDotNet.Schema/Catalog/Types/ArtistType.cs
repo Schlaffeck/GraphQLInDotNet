@@ -1,11 +1,8 @@
 ﻿using GraphQLInDotNet.Data;
 using GraphQLInDotNet.Data.Models;
+using HotChocolate.Resolvers;
 using HotChocolate.Types;
-using HotChocolate.Types.Descriptors;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GraphQlInDotNet.Schema.Catalog.Types
 {
@@ -23,8 +20,13 @@ namespace GraphQlInDotNet.Schema.Catalog.Types
                     .Filter(g => g.Name));
 
             descriptor.Field(a => a.Albums).Type<NonNullType<ListType<AlbumType>>>()
-                .Resolver(ctx => ctx.Service<IDataContext>().
-                Albums.QueryNoTracking().Where(a => a.ArtistId == ctx.Parent<Artist>().Id));
+                .Resolver(AlbumsResolver);
+        }
+
+        private IQueryable<Album> AlbumsResolver(IResolverContext ctx)
+        {
+            return ctx.Service<IDataContext>().
+                Albums.QueryNoTracking().Where(a => a.ArtistId == ctx.Parent<Artist>().Id);
         }
     }
 }

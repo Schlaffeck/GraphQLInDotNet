@@ -45,8 +45,6 @@ namespace GraphQlInDotNet.Schema
                             .Sortable(a => a.Name);
                             descriptor.Sortable(a => a.Id);
                         });
-                    td.Field(q => q.Albums())
-                    .UsePaging<ObjectType<AlbumDto>>();
                 })
                 .AddMutationType<MusicCatalogMutation>();
         }
